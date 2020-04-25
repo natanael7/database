@@ -1,10 +1,16 @@
 var Order = require("./orders.controller");
 
 module.exports = function (router) {
-  router.post("/create", Order.createOrder);
-  router.get("/get", Order.getOrders);
-  router.get("/get/:name", Order.getOrder);
-  router.put("/update/:id", Order.updateOrder);
-  router.delete("/remove/:id", Order.removeOrder);
+  router.post("/createOrder", Order.createOrder);
+  router.get("/getAllOrder", Order.getAllOrder);
+  router.put("/updateOrder/:id", Order.updateOrder);
+  router.delete("/deleteOrder/:id", Order.deleteOrder);
+  router.get("/summaryAllOrder", Order.summaryAllOrder);
+  router.post("/filterOrder", Order.filterOrder);
+  router.post("/summaryFilter", Order.summaryFilter);
+  
+  // BETA
+
+  router.get("/get/:id", Order.getOrder);
   router.delete("/deleteAll", Order.debugDelete);
 };
