@@ -24,7 +24,7 @@
     { "prop": "adress","type":"String", "required":false   },
     { "prop": "date","type":"String", "required":true   },
     { "prop": "id","type":"Number", "required":false   },
-    { "prop": "orders","type":"String", "required":false   },
+    { "prop": "orders","type":"Array", "required":false   },
     { "prop": "ltv","type":"Number", "required":false   }
   ],
   "productSchema": [
