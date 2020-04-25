@@ -1,7 +1,6 @@
 const Customer = require("./customers.dao");
-const { Summary } = require("./summary.js");
 
-exports.createCustomer = function (req, res, next) {
+exports.create = function (req, res, next) {
   let customer = {};
   let json = require("../../params.json");
   let customerSchema = json.customerSchema;
@@ -20,7 +19,7 @@ exports.createCustomer = function (req, res, next) {
     });
   });
 };
-exports.getAllCustomer = function (req, res, next) {
+exports.getAll = function (req, res, next) {
   Customer.get({}, function (err, customers) {
     if (err) {
       res.json({
@@ -32,7 +31,7 @@ exports.getAllCustomer = function (req, res, next) {
     });
   });
 };
-exports.summaryAllCustomer = function (req, res, next) {
+exports.summaryAll = function (req, res, next) {
   Customer.get({}, function (err, customers) {
     let summ = new Summary(customers);
     if (err) {
@@ -45,7 +44,7 @@ exports.summaryAllCustomer = function (req, res, next) {
     });
   });
 };
-exports.updateCustomer = function (req, res, next) {
+exports.update = function (req, res, next) {
   let customer = {};
   let json = require("../../params.json");
   let customerSchema = json.customerSchema;
@@ -64,7 +63,7 @@ exports.updateCustomer = function (req, res, next) {
     });
   });
 };
-exports.deleteCustomer = function (req, res, next) {
+exports.delete = function (req, res, next) {
   Customer.delete({ _id: req.params.id }, function (err, customer) {
     if (err) {
       res.json({
@@ -76,7 +75,7 @@ exports.deleteCustomer = function (req, res, next) {
     });
   });
 };
-exports.filterCustomer = function (req, res, next) {
+exports.filter = function (req, res, next) {
   function switched(criteria, customers) {
     let result;
     switch (criteria.type) {
@@ -233,7 +232,7 @@ exports.summaryFilter = function (req, res, next) {
 };
 
 // BETA
-exports.getCustomer = function (req, res, next) {
+exports.get = function (req, res, next) {
   Customer.get({ _id: req.params.name }, function (err, customers) {
     if (err) {
       res.json({

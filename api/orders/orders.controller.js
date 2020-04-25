@@ -1,7 +1,7 @@
 const Order = require("./orders.dao");
 const { Summary } = require("./summary.js");
 
-exports.createOrder = function (req, res, next) {
+exports.create = function (req, res, next) {
   let order = {};
   let json = require("../../params.json");
   let orderSchema = json.orderSchema;
@@ -20,7 +20,7 @@ exports.createOrder = function (req, res, next) {
     });
   });
 };
-exports.getAllOrder = function (req, res, next) {
+exports.getAll = function (req, res, next) {
   Order.get({}, function (err, orders) {
     if (err) {
       res.json({
@@ -32,7 +32,7 @@ exports.getAllOrder = function (req, res, next) {
     });
   });
 };
-exports.summaryAllOrder = function (req, res, next) {
+exports.summaryAll = function (req, res, next) {
   Order.get({}, function (err, orders) {
     let summ = new Summary(orders);
     if (err) {
@@ -45,7 +45,7 @@ exports.summaryAllOrder = function (req, res, next) {
     });
   });
 };
-exports.updateOrder = function (req, res, next) {
+exports.update = function (req, res, next) {
   let order = {};
   let json = require("../../params.json");
   let orderSchema = json.orderSchema;
@@ -64,7 +64,7 @@ exports.updateOrder = function (req, res, next) {
     });
   });
 };
-exports.deleteOrder = function (req, res, next) {
+exports.delete = function (req, res, next) {
   Order.delete({ _id: req.params.id }, function (err, order) {
     if (err) {
       res.json({
@@ -76,7 +76,7 @@ exports.deleteOrder = function (req, res, next) {
     });
   });
 };
-exports.filterOrder = function (req, res, next) {
+exports.filter = function (req, res, next) {
   function switched(criteria, orders) {
     let result;
     switch (criteria.type) {
@@ -233,7 +233,7 @@ exports.summaryFilter = function (req, res, next) {
 };
 
 // BETA
-exports.getOrder = function (req, res, next) {
+exports.get = function (req, res, next) {
   Order.get({ _id: req.params.name }, function (err, orders) {
     if (err) {
       res.json({

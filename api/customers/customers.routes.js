@@ -1,16 +1,16 @@
-var Order = require("./customers.controller");
+const Customer = require("./customers.controller");
 
 module.exports = function (router) {
-  router.post("/createOrder", Order.createOrder);
-  router.get("/getAllOrder", Order.getAllOrder);
-  router.put("/updateOrder/:id", Order.updateOrder);
-  router.delete("/deleteOrder/:id", Order.deleteOrder);
-  router.get("/summaryAllOrder", Order.summaryAllOrder);
-  router.post("/filterOrder", Order.filterOrder);
-  router.post("/summaryFilter", Order.summaryFilter);
+  router.post("/createCustomer", Customer.create);
+  router.get("/getAllCustomer", Customer.getAll);
+  router.put("/updateCustomer/:id", Customer.update);
+  router.delete("/deleteCustomer/:id", Customer.delete);
+  router.get("/summaryAllCustomer", Customer.summaryAll);
+  router.post("/filterCustomer", Customer.filter);
+  router.post("/summaryFilter", Customer.summaryFilter);
   
   // BETA
 
-  router.get("/get/:id", Order.getOrder);
-  router.delete("/deleteAll", Order.debugDelete);
+  router.get("/getCustomer/:id", Customer.get);
+  router.delete("/deleteAllCustomer", Customer.debugDelete);
 };

@@ -1,6 +1,6 @@
 {
   "orderSchema": [
-    { "prop": "customer", "type": "Object", "required": true },
+    { "prop": "customer", "type": "String", "required": true },
     { "prop": "productSet", "type": "Array", "required": true },
     { "prop": "number", "type": "Number", "required": true },
     { "prop": "date", "type": "String", "required": true },
