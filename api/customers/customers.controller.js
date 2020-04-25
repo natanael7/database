@@ -233,7 +233,7 @@ exports.summaryFilter = function (req, res, next) {
 
 // BETA
 exports.get = function (req, res, next) {
-  Customer.get({ _id: req.params.name }, function (err, customers) {
+  Customer.get({ _id: req.params.id }, function (err, customers) {
     if (err) {
       res.json({
         error: err,

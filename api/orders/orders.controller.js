@@ -1,24 +1,65 @@
 const Order = require("./orders.dao");
+const Customer = require("../customers/customers.dao.js");
 const { Summary } = require("./summary.js");
 
 exports.create = function (req, res, next) {
-  let order = {};
-  let json = require("../../params.json");
-  let orderSchema = json.orderSchema;
-  orderSchema.forEach((property) => {
-    order[property["prop"]] = req.body[property["prop"]];
-  });
-
-  Order.create(order, function (err, order) {
-    if (err) {
-      res.json({
-        error: err,
+  function find(customer) {
+    let result;
+    Customer.get({ account: customer.account }, function (err, result) {
+      result = res;
+    });
+    return result;
+  }
+  let order = {},
+    customer = {},
+    json = require("../../params.json"),
+    orderSchema = json.orderSchema,
+    customerSchema = json.customerSchema;
+  try {
+    orderSchema.forEach((property) => {
+      order[property["prop"]] = req.body[property["prop"]];
+    });
+    if (req.body.customer == undefined) {
+      const existent = find(customer);
+      if (existent != undefined) {
+        order.customer = existent._id;
+        Order.create(order, function (err, order) {
+          existent.orders.push(order.id);
+          existent.ltv += order.sum;
+          existent.save();
+          res.json({
+            messageOrder: `Order created successfully with id: ${order._id}`,
+            messageCustomer: `Added to customer with id: ${order.customer}`,
+          });
+        });
+      } else {
+        customerSchema.forEach((property) => {
+          customer[property["prop"]] = req.body[property["prop"]];
+        });
+        Customer.create(customer, function (err, customer) {
+          order.customer = customer._id;
+          Order.create(order, function (err, order) {
+            customer.orders.push(order.id);
+            customer.save();
+            res.json({
+              messageOrder: `Order created successfully with id: ${order._id}`,
+              messageCustomer: `Customer created successfully with id: ${order.customer}`,
+            });
+          });
+        });
+      }
+    } else {
+      order.customer = req.body.customer;
+      Order.create(order, function (err, order) {
+        res.json({
+          messageOrder: `Order created successfully with id: ${order._id}`,
+          messageCustomer: `Added to customer with id: ${order.customer}`,
+        });
       });
     }
-    res.json({
-      message: `Order created successfully with id: ${order._id}`,
-    });
-  });
+  } catch (err) {
+    res.json(`Error: ${err}`);
+  }
 };
 exports.getAll = function (req, res, next) {
   Order.get({}, function (err, orders) {
@@ -217,7 +258,7 @@ exports.summaryFilter = function (req, res, next) {
     let results = orders;
     let crit = req.body.criterias;
     for (let i = 0; i < crit.length; i++) results = switched(crit[i], results);
-    let summ = new Summary(results)
+    let summ = new Summary(results);
     return summ;
   }
   Order.get({}, function (err, orders) {
@@ -234,7 +275,7 @@ exports.summaryFilter = function (req, res, next) {
 
 // BETA
 exports.get = function (req, res, next) {
-  Order.get({ _id: req.params.name }, function (err, orders) {
+  Order.get({ _id: req.params.id }, function (err, orders) {
     if (err) {
       res.json({
         error: err,

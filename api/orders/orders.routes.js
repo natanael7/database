@@ -1,16 +1,16 @@
-const Order = require("./orders.controller");
+const Order = require("./orders.controller.js");
 
 module.exports = function (router) {
-  router.post("/createOrder", Order.create);
-  router.get("/getAllOrder", Order.getAll);
-  router.put("/updateOrder/:id", Order.update);
-  router.delete("/deleteOrder/:id", Order.delete);
-  router.get("/summaryAllOrder", Order.summaryAll);
-  router.post("/filterOrder", Order.filter);
-  router.post("/summaryFilter", Order.summaryFilter);
+  router.post("/order/create", Order.create);
+  router.get("/order/getAll", Order.getAll);
+  router.put("/order/update/:id", Order.update);
+  router.delete("/order/delete/:id", Order.delete);
+  router.get("/order/summaryAll", Order.summaryAll);
+  router.post("/order/filter", Order.filter);
+  router.post("/order/summaryFilter", Order.summaryFilter);
   
   // BETA
 
-  router.get("/get/:id", Order.get);
-  router.delete("/deleteAll", Order.debugDelete);
+  router.get("/order/get/:id", Order.get);
+  router.delete("/order/deleteAll", Order.debugDelete);
 };
