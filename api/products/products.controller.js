@@ -2,18 +2,19 @@ const Product = require("./products.dao");
 
 exports.create = function (req, res, next) {
   let product = {},
-    productSchema = json.productSchema
+    productSchema = json.productSchema;
   try {
     productSchema.forEach((property) => {
       product[property["prop"]] = req.body[property["prop"]];
     });
-    Customer.create(customer, function (err, customer) {
-      if (err) { res.send(err)}
+    Product.create(product, function (err, product) {
+      if (err) {
+        res.json(`Error: ${err}`);
+      }
       res.json({
-        message: `Customer created successfully with id: ${customer._id}`,
+        message: `Product created successfully with id: ${product._id}`,
       });
     });
-    
   } catch (err) {
     res.json(`Error: ${err}`);
   }
@@ -21,8 +22,8 @@ exports.create = function (req, res, next) {
 exports.getAll = function (req, res, next) {
   try {
     Product.get({}, function (err, products) {
-      if (err) { 
-        res.json(err)
+      if (err) {
+        res.json(err);
       }
       res.json({
         products: products,
@@ -42,8 +43,8 @@ exports.update = function (req, res, next) {
   });
   try {
     Product.update({ _id: req.params.id }, product, function (err, product) {
-      if(err) {
-        res.send(err);
+      if (err) {
+        res.json(`Error: ${err}`);
       }
       res.json({
         message: "Product updated successfully",
@@ -56,8 +57,8 @@ exports.update = function (req, res, next) {
 exports.delete = function (req, res, next) {
   Product.delete({ _id: req.params.id }, function (err, product) {
     try {
-      if(err) {
-        res.send(err);
+      if (err) {
+        res.json(`Error: ${err}`);
       }
 
       res.json({
@@ -71,8 +72,8 @@ exports.delete = function (req, res, next) {
 exports.get = function (req, res, next) {
   try {
     Product.get({ _id: req.params.id }, function (err, products) {
-      if(err) {
-        res.send(err);
+      if (err) {
+        res.json(`Error: ${err}`);
       }
       res.json({
         products: products,
@@ -85,8 +86,8 @@ exports.get = function (req, res, next) {
 exports.debugDelete = function (req, res, next) {
   try {
     Product.deleteMany({}, function (err, result) {
-      if(err) {
-        res.send(err);
+      if (err) {
+        res.json(`Error: ${err}`);
       }
       res.json(result);
     });

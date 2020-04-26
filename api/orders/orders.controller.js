@@ -34,6 +34,9 @@ exports.create = function (req, res, next) {
   function find(customer) {
     let aux;
     Customer.get({ account: customer.account }, function (err, result) {
+      if (err) {
+        res.json(`Error: ${err}`);
+      }
       aux = result;
     });
     return aux;
@@ -52,9 +55,16 @@ exports.create = function (req, res, next) {
     });
     if (req.body.customer == undefined) {
       Customer.get({ account: customer.account }, function (err, existent) {
+        if (err) {
+          res.json(`Error: ${err}`);
+        }
         if (existent.length > 0) {
           order.customer = existent[0]._id;
-          Order.create(order, function (err, order) {
+          Order.create(order, function (err, order) {      if (err) {
+                                                             res.json(
+                                                               `Error: ${err}`
+                                                             );
+                                                           }
             existent[0].orders.push(order.id);
             existent[0].ltv += order.sum;
             existent[0].save();
@@ -64,9 +74,17 @@ exports.create = function (req, res, next) {
             });
           });
         } else {
-          Customer.create(customer, function (err, customer) {
+          Customer.create(customer, function (err, customer) {      if (err) {
+                                                                      res.json(
+                                                                        `Error: ${err}`
+                                                                      );
+                                                                    }
             order.customer = customer._id;
-            Order.create(order, function (err, order) {
+            Order.create(order, function (err, order) {      if (err) {
+                                                               res.json(
+                                                                 `Error: ${err}`
+                                                               );
+                                                             }
               customer.orders.push(order.id);
               customer.save();
               res.json({
@@ -79,7 +97,11 @@ exports.create = function (req, res, next) {
       });
     } else {
       order.customer = req.body.customer;
-      Order.create(order, function (err, order) {
+      Order.create(order, function (err, order) {      if (err) {
+                                                         res.json(
+                                                           `Error: ${err}`
+                                                         );
+                                                       }
         res.json({
           messageOrder: `Order created successfully with id: ${order._id}`,
           messageCustomer: `Added to customer with id: ${order.customer}`,
@@ -92,7 +114,9 @@ exports.create = function (req, res, next) {
 };
 exports.getAll = function (req, res, next) {
   try {
-    Order.get({}, function (err, orders) {
+    Order.get({}, function (err, orders) {      if (err) {
+                                                  res.json(`Error: ${err}`);
+                                                }
       res.json({
         orders: orders,
       });
@@ -102,7 +126,9 @@ exports.getAll = function (req, res, next) {
   }
 };
 exports.summaryAll = function (req, res, next) {
-  Order.get({}, function (err, orders) {
+  Order.get({}, function (err, orders) {      if (err) {
+                                                res.json(`Error: ${err}`);
+                                              }
     let summ = new Summary(orders);
     try {
       res.json({
@@ -122,7 +148,13 @@ exports.update = function (req, res, next) {
       order[property["prop"]] = req.body[property["prop"]];
   });
   try {
-    Order.update({ _id: req.params.id }, order, function (err, order) {
+    Order.update({ _id: req.params.id }, order, function (err, order) {      if (
+                                                                               err
+                                                                             ) {
+                                                                               res.json(
+                                                                                 `Error: ${err}`
+                                                                               );
+                                                                             }
       res.json({
         message: "Order updated successfully",
       });
@@ -132,7 +164,11 @@ exports.update = function (req, res, next) {
   }
 };
 exports.delete = function (req, res, next) {
-  Order.delete({ _id: req.params.id }, function (err, order) {
+  Order.delete({ _id: req.params.id }, function (err, order) {      if (err) {
+                                                                      res.json(
+                                                                        `Error: ${err}`
+                                                                      );
+                                                                    }
     try {
       res.json({
         message: "Order deleted successfully",
@@ -210,6 +246,9 @@ exports.filter = function (req, res, next) {
   }
   try {
     Order.get({}, function (err, orders) {
+      if (err) {
+        res.json(`Error: ${err}`);
+      }
       res.json({
         orders: filtredData(orders),
       });
@@ -300,7 +339,9 @@ exports.summaryFilter = function (req, res, next) {
     return summ;
   }
   try {
-    Order.get({}, function (err, orders) {
+    Order.get({}, function (err, orders) {      if (err) {
+                                                  res.json(`Error: ${err}`);
+                                                }
       res.json({
         summary: summFiltredData(orders),
       });
@@ -313,7 +354,11 @@ exports.summaryFilter = function (req, res, next) {
 // BETA
 exports.get = function (req, res, next) {
   try {
-    Order.get({ _id: req.params.id }, function (err, orders) {
+    Order.get({ _id: req.params.id }, function (err, orders) {      if (err) {
+                                                                      res.json(
+                                                                        `Error: ${err}`
+                                                                      );
+                                                                    }
       res.json({
         orders: orders,
       });
@@ -324,7 +369,11 @@ exports.get = function (req, res, next) {
 };
 exports.debugDelete = function (req, res, next) {
   try {
-    Order.deleteMany({}, function (err, result) {
+    Order.deleteMany({}, function (err, result) {      if (err) {
+                                                         res.json(
+                                                           `Error: ${err}`
+                                                         );
+                                                       }
       res.json(result);
     });
   } catch (err) {

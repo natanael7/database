@@ -10,7 +10,7 @@ exports.create = function (req, res, next) {
   try {
     Customer.create(customer, function (err, customer) {
       if (err) {
-        res.send(err);
+        res.json(`Error: ${err}`);;
       }
       res.json({
         message: `Customer created successfully with id: ${customer._id}`,
@@ -24,7 +24,7 @@ exports.getAll = function (req, res, next) {
   try {
     Customer.get({}, function (err, customers) {
       if (err) {
-        res.send(err);
+        res.json(`Error: ${err}`);;
       }
       res.json({
         customers: customers,
@@ -38,7 +38,7 @@ exports.summaryAll = function (req, res, next) {
   try {
     Customer.get({}, function (err, customers) {
       if (err) {
-        res.send(err);
+        res.json(`Error: ${err}`);;
       }
       let summ = new Summary(customers);
       res.json({
@@ -60,7 +60,7 @@ exports.update = function (req, res, next) {
   try {
     Customer.update({ _id: req.params.id }, customer, function (err, customer) {
       if (err) {
-        res.send(err);
+        res.json(`Error: ${err}`);;
       }
       res.json({
         message: "Customer updated successfully",
@@ -74,7 +74,7 @@ exports.delete = function (req, res, next) {
   try {
     Customer.delete({ _id: req.params.id }, function (err, customer) {
       if (err) {
-        res.send(err);
+        res.json(`Error: ${err}`);;
       }
       res.json({
         message: "Customer deleted successfully",
@@ -167,7 +167,7 @@ exports.filter = function (req, res, next) {
   try {
     Customer.get({}, function (err, customers) {
       if (err) {
-        res.send(err);
+        res.json(`Error: ${err}`);;
       }
       res.json({
         customers: filtredData(customers),
@@ -247,7 +247,7 @@ exports.summaryFilter = function (req, res, next) {
   try {
     Customer.get({}, function (err, customers) {
       if (err) {
-        res.send(err);
+        res.json(`Error: ${err}`);;
       }
       res.json({
         summary: summFiltredData(customers),
@@ -263,7 +263,7 @@ exports.get = function (req, res, next) {
   try {
     Customer.get({ _id: req.params.id }, function (err, customers) {
       if (err) {
-        res.send(err);
+        res.json(`Error: ${err}`);;
       }
       res.json({
         customers: customers,
@@ -277,7 +277,7 @@ exports.debugDelete = function (req, res, next) {
   try {
     Customer.deleteMany({}, function (err, result) {
       if (err) {
-        res.send(err);
+        res.json(`Error: ${err}`);;
       }
       res.json(result);
     });
