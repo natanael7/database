@@ -4,11 +4,11 @@ const { Summary } = require("./summary.js");
 
 exports.create = function (req, res, next) {
   function find(customer) {
-    let result;
+    let aux;
     Customer.get({ account: customer.account }, function (err, result) {
-      result = res;
+      aux = result;
     });
-    return result;
+    return aux;
   }
   let order = {},
     customer = {},
@@ -19,35 +19,36 @@ exports.create = function (req, res, next) {
     orderSchema.forEach((property) => {
       order[property["prop"]] = req.body[property["prop"]];
     });
+    customerSchema.forEach((property) => {
+      customer[property["prop"]] = req.body[property["prop"]];
+    });
     if (req.body.customer == undefined) {
-      const existent = find(customer);
-      if (existent != undefined) {
-        order.customer = existent._id;
-        Order.create(order, function (err, order) {
-          existent.orders.push(order.id);
-          existent.ltv += order.sum;
-          existent.save();
-          res.json({
-            messageOrder: `Order created successfully with id: ${order._id}`,
-            messageCustomer: `Added to customer with id: ${order.customer}`,
-          });
-        });
-      } else {
-        customerSchema.forEach((property) => {
-          customer[property["prop"]] = req.body[property["prop"]];
-        });
-        Customer.create(customer, function (err, customer) {
-          order.customer = customer._id;
+      Customer.get({ account: customer.account }, function (err, existent) {
+        if (existent.length > 0) {
+          order.customer = existent[0]._id;
           Order.create(order, function (err, order) {
-            customer.orders.push(order.id);
-            customer.save();
+            existent[0].orders.push(order.id);
+            existent[0].ltv += order.sum;
+            existent[0].save();
             res.json({
               messageOrder: `Order created successfully with id: ${order._id}`,
-              messageCustomer: `Customer created successfully with id: ${order.customer}`,
+              messageCustomer: `Added to customer with id: ${order.customer}`,
             });
           });
-        });
-      }
+        } else {
+          Customer.create(customer, function (err, customer) {
+            order.customer = customer._id;
+            Order.create(order, function (err, order) {
+              customer.orders.push(order.id);
+              customer.save();
+              res.json({
+                messageOrder: `Order created successfully with id: ${order._id}`,
+                messageCustomer: `Customer created successfully with id: ${order.customer}`,
+              });
+            });
+          });
+        }
+      });
     } else {
       order.customer = req.body.customer;
       Order.create(order, function (err, order) {
