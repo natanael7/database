@@ -1,7 +1,6 @@
 const Order = require("./orders.dao");
 const Customer = require("../customers/customers.dao.js");
 const { Summary } = require("./summary.js");
-
 exports.create = function (req, res, next) {
   function find(customer) {
     let aux;
