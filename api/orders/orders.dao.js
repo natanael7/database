@@ -1,9 +1,9 @@
-var mongoose = require("mongoose");
-var orderSchema = require("./orders.model");
+let mongoose = require("mongoose");
+let orderSchema = require("./orders.model");
 
 orderSchema.statics = {
   create: function (data, cb) {
-    var hero = new this(data);
+    let hero = new this(data);
     hero.save(cb);
   },
 
@@ -24,5 +24,5 @@ orderSchema.statics = {
   },
 };
 
-var orderModel = mongoose.model("Order", orderSchema);
+let orderModel = mongoose.model("Order", orderSchema);
 module.exports = orderModel;

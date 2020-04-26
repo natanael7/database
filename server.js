@@ -1,21 +1,20 @@
+let express = require("express");
+let log = require("morgan")("dev");
+let bodyParser = require("body-parser");
 
-var express = require('express');
-var log = require('morgan')('dev');
-var bodyParser = require('body-parser');
+let properties = require("./config/properties");
+let db = require("./config/database");
 
-var properties = require('./config/properties');
-var db = require('./config/database');
-
-var ordersRoutes = require("./api/orders/orders.routes");
-var customersRoutes = require("./api/customers/customers.routes");
-var app = express();
+let ordersRoutes = require("./api/orders/orders.routes");
+let customersRoutes = require("./api/customers/customers.routes");
+let app = express();
 
 //configure bodyparser
-var bodyParserJSON = bodyParser.json();
-var bodyParserURLEncoded = bodyParser.urlencoded({extended:true});
+let bodyParserJSON = bodyParser.json();
+let bodyParserURLEncoded = bodyParser.urlencoded({ extended: true });
 
 //initialise express router
-var router = express.Router();
+let router = express.Router();
 
 // call the database connectivity function
 db();
@@ -26,21 +25,24 @@ app.use(bodyParserJSON);
 app.use(bodyParserURLEncoded);
 
 // Error handling
-app.use(function(req, res, next) {
-    res.setHeader("Access-Control-Allow-Origin", "*");
-     res.setHeader("Access-Control-Allow-Credentials", "true");
-     res.setHeader("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
-     res.setHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Origin,Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers,Authorization");
-   next();
- });
+app.use(function (req, res, next) {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+  res.setHeader("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Access-Control-Allow-Origin,Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers,Authorization"
+  );
+  next();
+});
 
 // use express router
-app.use('/api',router);
+app.use("/api", router);
 
 ordersRoutes(router);
 customersRoutes(router);
 
 // intialise server
 app.listen(properties.PORT, (req, res) => {
-    console.log(`Server is running on ${properties.PORT} port.`);
-})
+  console.log(`Server is running on ${properties.PORT} port.`);
+});

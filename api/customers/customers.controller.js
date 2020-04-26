@@ -7,42 +7,38 @@ exports.create = function (req, res, next) {
   customerSchema.forEach((property) => {
     customer[property["prop"]] = req.body[property["prop"]];
   });
-
-  Customer.create(customer, function (err, customer) {
-    if (err) {
+  try {
+    Customer.create(customer, function (err, customer) {
       res.json({
-        error: err,
+        message: `Customer created successfully with id: ${customer._id}`,
       });
-    }
-    res.json({
-      message: `Customer created successfully with id: ${customer._id}`,
     });
-  });
+  } catch (err) {
+    res.json(err);
+  }
 };
 exports.getAll = function (req, res, next) {
-  Customer.get({}, function (err, customers) {
-    if (err) {
+  try {
+    Customer.get({}, function (err, customers) {
       res.json({
-        error: err,
+        customers: customers,
       });
-    }
-    res.json({
-      customers: customers,
     });
-  });
+  } catch (err) {
+    res.json(err);
+  }
 };
 exports.summaryAll = function (req, res, next) {
-  Customer.get({}, function (err, customers) {
-    let summ = new Summary(customers);
-    if (err) {
+  try {
+    Customer.get({}, function (err, customers) {
+      let summ = new Summary(customers);
       res.json({
-        error: err,
+        summary: summ,
       });
-    }
-    res.json({
-      summary: summ,
     });
-  });
+  } catch (err) {
+    res.json(err);
+  }
 };
 exports.update = function (req, res, next) {
   let customer = {};
@@ -52,28 +48,26 @@ exports.update = function (req, res, next) {
     if (req.body[property["prop"]] != undefined)
       customer[property["prop"]] = req.body[property["prop"]];
   });
-  Customer.update({ _id: req.params.id }, customer, function (err, customer) {
-    if (err) {
+  try {
+    Customer.update({ _id: req.params.id }, customer, function (err, customer) {
       res.json({
-        error: err,
+        message: "Customer updated successfully",
       });
-    }
-    res.json({
-      message: "Customer updated successfully",
     });
-  });
+  } catch (err) {
+    res.json(err);
+  }
 };
 exports.delete = function (req, res, next) {
-  Customer.delete({ _id: req.params.id }, function (err, customer) {
-    if (err) {
+  try {
+    Customer.delete({ _id: req.params.id }, function (err, customer) {
       res.json({
-        error: err,
+        message: "Customer deleted successfully",
       });
-    }
-    res.json({
-      message: "Customer deleted successfully",
     });
-  });
+  } catch (err) {
+    res.json(err);
+  }
 };
 exports.filter = function (req, res, next) {
   function switched(criteria, customers) {
@@ -141,16 +135,15 @@ exports.filter = function (req, res, next) {
     for (let i = 0; i < crit.length; i++) results = switched(crit[i], results);
     return results;
   }
-  Customer.get({}, function (err, customers) {
-    if (err) {
+  try {
+    Customer.get({}, function (err, customers) {
       res.json({
-        error: err,
+        customers: filtredData(customers),
       });
-    }
-    res.json({
-      customers: filtredData(customers),
     });
-  });
+  } catch (err) {
+    res.json(err);
+  }
 };
 exports.summaryFilter = function (req, res, next) {
   function switched(criteria, customers) {
@@ -216,40 +209,38 @@ exports.summaryFilter = function (req, res, next) {
     let results = customers;
     let crit = req.body.criterias;
     for (let i = 0; i < crit.length; i++) results = switched(crit[i], results);
-    let summ = new Summary(results)
+    let summ = new Summary(results);
     return summ;
   }
-  Customer.get({}, function (err, customers) {
-    if (err) {
+  try {
+    Customer.get({}, function (err, customers) {
       res.json({
-        error: err,
+        summ: summFiltredData(customers),
       });
-    }
-    res.json({
-      summ: summFiltredData(customers),
     });
-  });
+  } catch (err) {
+    res.json(err);
+  }
 };
 
 // BETA
 exports.get = function (req, res, next) {
-  Customer.get({ _id: req.params.id }, function (err, customers) {
-    if (err) {
+  try {
+    Customer.get({ _id: req.params.id }, function (err, customers) {
       res.json({
-        error: err,
+        customers: customers,
       });
-    }
-    res.json({
-      customers: customers,
     });
-  });
+  } catch (err) {
+    res.json(err);
+  }
 };
 exports.debugDelete = function (req, res, next) {
-  Customer.deleteMany({}, function (err, result) {
-    if (err) {
-      res.json(err);
-    } else {
+  try {
+    Customer.deleteMany({}, function (err, result) {
       res.json(result);
-    }
-  });
+    });
+  } catch (err) {
+    res.json(err);
+  }
 };

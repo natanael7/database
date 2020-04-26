@@ -1,16 +1,16 @@
 //require mongoose module
-var mongoose = require("mongoose");
+let mongoose = require("mongoose");
 
 //require chalk module to give colors to console text
-var chalk = require("chalk");
+let chalk = require("chalk");
 
 //require database URL from properties file
-var dbURL = require("./properties").DB;
+let dbURL = require("./properties").DB;
 
-var connected = chalk.bold.cyan;
-var error = chalk.bold.yellow;
-var disconnected = chalk.bold.red;
-var termination = chalk.bold.magenta;
+let connected = chalk.bold.cyan;
+let error = chalk.bold.yellow;
+let disconnected = chalk.bold.red;
+let termination = chalk.bold.magenta;
 
 //export this function and imported by server.js
 module.exports = function () {

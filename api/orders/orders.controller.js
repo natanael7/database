@@ -62,28 +62,26 @@ exports.create = function (req, res, next) {
   }
 };
 exports.getAll = function (req, res, next) {
-  Order.get({}, function (err, orders) {
-    if (err) {
+  try {
+    Order.get({}, function (err, orders) {
       res.json({
-        error: err,
+        orders: orders,
       });
-    }
-    res.json({
-      orders: orders,
     });
-  });
+  } catch (err) {
+    res.json(err);
+  }
 };
 exports.summaryAll = function (req, res, next) {
   Order.get({}, function (err, orders) {
     let summ = new Summary(orders);
-    if (err) {
+    try {
       res.json({
-        error: err,
+        summary: summ,
       });
+    } catch (err) {
+      res.json(err);
     }
-    res.json({
-      summary: summ,
-    });
   });
 };
 exports.update = function (req, res, next) {
@@ -94,27 +92,25 @@ exports.update = function (req, res, next) {
     if (req.body[property["prop"]] != undefined)
       order[property["prop"]] = req.body[property["prop"]];
   });
-  Order.update({ _id: req.params.id }, order, function (err, order) {
-    if (err) {
+  try {
+    Order.update({ _id: req.params.id }, order, function (err, order) {
       res.json({
-        error: err,
+        message: "Order updated successfully",
       });
-    }
-    res.json({
-      message: "Order updated successfully",
     });
-  });
+  } catch (err) {
+    res.json(err);
+  }
 };
 exports.delete = function (req, res, next) {
   Order.delete({ _id: req.params.id }, function (err, order) {
-    if (err) {
+    try {
       res.json({
-        error: err,
+        message: "Order deleted successfully",
       });
+    } catch (err) {
+      res.json(err);
     }
-    res.json({
-      message: "Order deleted successfully",
-    });
   });
 };
 exports.filter = function (req, res, next) {
@@ -183,16 +179,15 @@ exports.filter = function (req, res, next) {
     for (let i = 0; i < crit.length; i++) results = switched(crit[i], results);
     return results;
   }
-  Order.get({}, function (err, orders) {
-    if (err) {
+  try {
+    Order.get({}, function (err, orders) {
       res.json({
-        error: err,
+        orders: filtredData(orders),
       });
-    }
-    res.json({
-      orders: filtredData(orders),
     });
-  });
+  } catch (err) {
+    res.json(err);
+  }
 };
 exports.summaryFilter = function (req, res, next) {
   function switched(criteria, orders) {
@@ -261,37 +256,35 @@ exports.summaryFilter = function (req, res, next) {
     let summ = new Summary(results);
     return summ;
   }
-  Order.get({}, function (err, orders) {
-    if (err) {
+  try {
+    Order.get({}, function (err, orders) {
       res.json({
-        error: err,
+        summ: summFiltredData(orders),
       });
-    }
-    res.json({
-      summ: summFiltredData(orders),
     });
-  });
+  } catch (err) {
+    res.json(err);
+  }
 };
 
 // BETA
 exports.get = function (req, res, next) {
-  Order.get({ _id: req.params.id }, function (err, orders) {
-    if (err) {
+  try {
+    Order.get({ _id: req.params.id }, function (err, orders) {
       res.json({
-        error: err,
+        orders: orders,
       });
-    }
-    res.json({
-      orders: orders,
     });
-  });
+  } catch (err) {
+    res.json(err);
+  }
 };
 exports.debugDelete = function (req, res, next) {
-  Order.deleteMany({}, function (err, result) {
-    if (err) {
-      res.json(err);
-    } else {
+  try {
+    Order.deleteMany({}, function (err, result) {
       res.json(result);
-    }
-  });
+    });
+  } catch (err) {
+    res.json(err);
+  }
 };

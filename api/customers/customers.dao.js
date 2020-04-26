@@ -1,9 +1,9 @@
-var mongoose = require("mongoose");
-var customerSchema = require("./customers.model");
+let mongoose = require("mongoose");
+let customerSchema = require("./customers.model");
 
 customerSchema.statics = {
   create: function (data, cb) {
-    var hero = new this(data);
+    let hero = new this(data);
     hero.save(cb);
   },
 
@@ -24,5 +24,5 @@ customerSchema.statics = {
   },
 };
 
-var customerModel = mongoose.model("Customer", customerSchema);
+let customerModel = mongoose.model("Customer", customerSchema);
 module.exports = customerModel;

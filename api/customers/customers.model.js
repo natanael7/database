@@ -1,5 +1,5 @@
-var mongoose = require("mongoose");
-var Schema = mongoose.Schema;
+let mongoose = require("mongoose");
+let Schema = mongoose.Schema;
 let tempObj = {};
 
 const json = require("../../params.json");
@@ -11,7 +11,7 @@ custSchema.forEach((property) => {
     unique: false,
   };
 });
-var customerSchema = new Schema(tempObj, {
+let customerSchema = new Schema(tempObj, {
   timestamps: false,
 });
 
