@@ -9,6 +9,9 @@ exports.create = function (req, res, next) {
   });
   try {
     Customer.create(customer, function (err, customer) {
+      if (err) {
+        res.send(err);
+      }
       res.json({
         message: `Customer created successfully with id: ${customer._id}`,
       });
@@ -20,6 +23,9 @@ exports.create = function (req, res, next) {
 exports.getAll = function (req, res, next) {
   try {
     Customer.get({}, function (err, customers) {
+      if (err) {
+        res.send(err);
+      }
       res.json({
         customers: customers,
       });
@@ -31,6 +37,9 @@ exports.getAll = function (req, res, next) {
 exports.summaryAll = function (req, res, next) {
   try {
     Customer.get({}, function (err, customers) {
+      if (err) {
+        res.send(err);
+      }
       let summ = new Summary(customers);
       res.json({
         summary: summ,
@@ -50,6 +59,9 @@ exports.update = function (req, res, next) {
   });
   try {
     Customer.update({ _id: req.params.id }, customer, function (err, customer) {
+      if (err) {
+        res.send(err);
+      }
       res.json({
         message: "Customer updated successfully",
       });
@@ -61,6 +73,9 @@ exports.update = function (req, res, next) {
 exports.delete = function (req, res, next) {
   try {
     Customer.delete({ _id: req.params.id }, function (err, customer) {
+      if (err) {
+        res.send(err);
+      }
       res.json({
         message: "Customer deleted successfully",
       });
@@ -108,19 +123,19 @@ exports.filter = function (req, res, next) {
       case "isNotBetween":
         if (criteria.smallest == undefined || criteria.biggest == undefined)
           res = [];
-                result = orders.filter((order) => {
-                  if (criteria.date)
-                    return (
-                      parseDate(order[criteria.parameter]) <=
-                        parseDate(criteria.smallest) ||
-                      parseDate(order[criteria.parameter]) >=
-                        parseDate(criteria.biggest)
-                    );
-                  return (
-                    order[criteria.parameter] >= parseInt(criteria.smallest) &&
-                    order[criteria.parameter] <= parseInt(criteria.biggest)
-                  );
-                });
+        result = orders.filter((order) => {
+          if (criteria.date)
+            return (
+              parseDate(order[criteria.parameter]) <=
+                parseDate(criteria.smallest) ||
+              parseDate(order[criteria.parameter]) >=
+                parseDate(criteria.biggest)
+            );
+          return (
+            order[criteria.parameter] >= parseInt(criteria.smallest) &&
+            order[criteria.parameter] <= parseInt(criteria.biggest)
+          );
+        });
         res = result;
         break;
       case "isIn":
@@ -151,6 +166,9 @@ exports.filter = function (req, res, next) {
   }
   try {
     Customer.get({}, function (err, customers) {
+      if (err) {
+        res.send(err);
+      }
       res.json({
         customers: filtredData(customers),
       });
@@ -228,6 +246,9 @@ exports.summaryFilter = function (req, res, next) {
   }
   try {
     Customer.get({}, function (err, customers) {
+      if (err) {
+        res.send(err);
+      }
       res.json({
         summary: summFiltredData(customers),
       });
@@ -241,6 +262,9 @@ exports.summaryFilter = function (req, res, next) {
 exports.get = function (req, res, next) {
   try {
     Customer.get({ _id: req.params.id }, function (err, customers) {
+      if (err) {
+        res.send(err);
+      }
       res.json({
         customers: customers,
       });
@@ -252,6 +276,9 @@ exports.get = function (req, res, next) {
 exports.debugDelete = function (req, res, next) {
   try {
     Customer.deleteMany({}, function (err, result) {
+      if (err) {
+        res.send(err);
+      }
       res.json(result);
     });
   } catch (err) {
