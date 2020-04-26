@@ -215,7 +215,7 @@ exports.summaryFilter = function (req, res, next) {
   try {
     Customer.get({}, function (err, customers) {
       res.json({
-        summ: summFiltredData(customers),
+        summary: summFiltredData(customers),
       });
     });
   } catch (err) {

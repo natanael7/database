@@ -1,6 +1,35 @@
 const Order = require("./orders.dao");
 const Customer = require("../customers/customers.dao.js");
 const { Summary } = require("./summary.js");
+function parseDate(date) {
+  let arr = date.split(".");
+  let res = parseInt(arr[0]);
+  let years = 0;
+  for (let i = 0; i < parseInt(arr[2]); i++)
+    if (i % 4 == 0) years += 366;
+    else res += 365;
+
+  let months = parseInt(arr[1]);
+  if (months <= 7)
+    for (let i = 0; i < months; i++)
+      if (i == 2)
+        if (parseInt(arr[2]) % 4 != 0) res += 28;
+        else res += 29;
+      else if (i % 2 == 0) {
+        res += 31;
+      } else {
+        res += 30;
+      }
+  else {
+    for (let i = 0; i < months; i++)
+      if (i % 2 != 0) {
+        res += 31;
+      } else {
+        res += 30;
+      }
+  }
+  return res;
+}
 exports.create = function (req, res, next) {
   function find(customer) {
     let aux;
@@ -211,6 +240,13 @@ exports.summaryFilter = function (req, res, next) {
         if (criteria.smallest == undefined || criteria.biggest == undefined)
           res = [];
         result = orders.filter((order) => {
+          if (criteria.date)
+            return (
+              parseDate(order[criteria.parameter]) >=
+                parseDate(criteria.smallest) &&
+              parseDate(order[criteria.parameter]) <=
+                parseDate(criteria.biggest)
+            );
           return (
             order[criteria.parameter] >= parseInt(criteria.smallest) &&
             order[criteria.parameter] <= parseInt(criteria.biggest)
@@ -259,7 +295,7 @@ exports.summaryFilter = function (req, res, next) {
   try {
     Order.get({}, function (err, orders) {
       res.json({
-        summ: summFiltredData(orders),
+        summary: summFiltredData(orders),
       });
     });
   } catch (err) {
