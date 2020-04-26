@@ -258,9 +258,16 @@ exports.summaryFilter = function (req, res, next) {
         if (criteria.smallest == undefined || criteria.biggest == undefined)
           res = [];
         result = orders.filter((order) => {
+          if (criteria.date)
+            return (
+              parseDate(order[criteria.parameter]) <=
+                parseDate(criteria.smallest) ||
+              parseDate(order[criteria.parameter]) >=
+                parseDate(criteria.biggest)
+            );
           return (
-            order[criteria.parameter] <= parseInt(criteria.smallest) ||
-            order[criteria.parameter] >= parseInt(criteria.biggest)
+            order[criteria.parameter] >= parseInt(criteria.smallest) &&
+            order[criteria.parameter] <= parseInt(criteria.biggest)
           );
         });
         res = result;

@@ -71,12 +71,20 @@ class Summary {
   countMicroProducts(arr) {
     let obj = {};
     arr.forEach((order) => {
+      if(order.productSet.length)
       order.productSet[0].forEach((product) => {
         if (Number.isInteger(parseInt(product.color)))
           product.color = "refurbished";
         if (obj[product.color] == undefined) obj[product.color] = 1;
         else obj[product.color]++;
       });
+      else
+        order.productSet.forEach((product) => {
+          if (Number.isInteger(parseInt(product.color)))
+            product.color = "refurbished";
+          if (obj[product.color] == undefined) obj[product.color] = 1;
+          else obj[product.color]++;
+        });
     });
 
     return obj;

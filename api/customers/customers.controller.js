@@ -90,10 +90,17 @@ exports.filter = function (req, res, next) {
       case "isBetween":
         if (criteria.smallest == undefined || criteria.biggest == undefined)
           res = [];
-        result = customers.filter((customer) => {
+        result = orders.filter((order) => {
+          if (criteria.date)
+            return (
+              parseDate(order[criteria.parameter]) >=
+                parseDate(criteria.smallest) &&
+              parseDate(order[criteria.parameter]) <=
+                parseDate(criteria.biggest)
+            );
           return (
-            customer[criteria.parameter] >= parseInt(criteria.smallest) &&
-            customer[criteria.parameter] <= parseInt(criteria.biggest)
+            order[criteria.parameter] >= parseInt(criteria.smallest) &&
+            order[criteria.parameter] <= parseInt(criteria.biggest)
           );
         });
         res = result;
@@ -101,12 +108,19 @@ exports.filter = function (req, res, next) {
       case "isNotBetween":
         if (criteria.smallest == undefined || criteria.biggest == undefined)
           res = [];
-        result = customers.filter((customer) => {
-          return (
-            customer[criteria.parameter] <= parseInt(criteria.smallest) ||
-            customer[criteria.parameter] >= parseInt(criteria.biggest)
-          );
-        });
+                result = orders.filter((order) => {
+                  if (criteria.date)
+                    return (
+                      parseDate(order[criteria.parameter]) <=
+                        parseDate(criteria.smallest) ||
+                      parseDate(order[criteria.parameter]) >=
+                        parseDate(criteria.biggest)
+                    );
+                  return (
+                    order[criteria.parameter] >= parseInt(criteria.smallest) &&
+                    order[criteria.parameter] <= parseInt(criteria.biggest)
+                  );
+                });
         res = result;
         break;
       case "isIn":
