@@ -41,7 +41,6 @@ app.use(function (req, res, next) {
 });
 
 // use express router
-app.use(express.static("./public"));
 app.use("/api", router);
 
 ordersRoutes(router);

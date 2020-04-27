@@ -6,7 +6,7 @@ customerSchema.statics = {
     let hero = new this(data);
     hero.ltv = 0;
     hero.orders = [];
-    customer.subscriptions = [];
+    hero.subscriptions = [];
     hero.save(cb);
   },
 
