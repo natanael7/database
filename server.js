@@ -50,6 +50,6 @@ couponsRoutes(router);
 subscriptionsRoutes(router);
 
 // intialise server
-app.listen(properties.PORT || process.env.PORT , (req, res) => {
+app.listen(process.env.PORT || properties.PORT, (req, res) => {
   console.log(`Server is running on ${properties.PORT} port.`);
 });

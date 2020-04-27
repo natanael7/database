@@ -1,6 +1,6 @@
 module.exports = {
-  PORT: 4000,
-  DB: "mongodb://natanael:natanael7@ds261648.mlab.com:61648/heroku_1m1s3x3k",
+  PORT: rocess.env.PORT || 3000,
+  DB: process.env.MONGODB_URI || "mongodb://localhost:27017/crud-mean",
 };
 let mongoose = require("mongoose");
 let chalk = require("chalk");
