@@ -1,6 +1,6 @@
 module.exports = {
   PORT: 80,
-  DB: "mongodb://localhost:27017/crud-mean",
+  DB: "mongodb://natanael:natanael7@ds261648.mlab.com:61648/heroku_1m1s3x3k",
 };
 let mongoose = require("mongoose");
 let chalk = require("chalk");
