@@ -83,6 +83,20 @@ exports.get = function (req, res, next) {
     res.json(err);
   }
 };
+exports.get = function (req, res, next) {
+  try {
+    Coupon.get({ name: req.params.name }, function (err, coupons) {
+      if (err) {
+        res.json(`Error: ${err}`);
+      }
+      res.json({
+        coupons: coupons,
+      });
+    });
+  } catch (err) {
+    res.json(err);
+  }
+};
 exports.debugDelete = function (req, res, next) {
   try {
     Coupon.deleteMany({}, function (err, result) {

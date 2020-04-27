@@ -4,8 +4,9 @@ let customerSchema = require("./customers.model");
 customerSchema.statics = {
   create: function (data, cb) {
     let hero = new this(data);
-    hero.ltv = 0
-    hero.orders = []
+    hero.ltv = 0;
+    hero.orders = [];
+    customer.subscriptions = [];
     hero.save(cb);
   },
 
