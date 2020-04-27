@@ -83,7 +83,7 @@ exports.get = function (req, res, next) {
     res.json(err);
   }
 };
-exports.get = function (req, res, next) {
+exports.getByName = function (req, res, next) {
   try {
     Coupon.get({ name: req.params.name }, function (err, coupons) {
       if (err) {
