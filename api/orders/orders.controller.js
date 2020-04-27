@@ -53,7 +53,10 @@ exports.create = function (req, res, next) {
     Order.findOne()
       .sort("-number")
       .exec(function (err, post) {
-        let newNumber = post.number + 1;
+        if(post != null)
+          let newNumber = post.number + 1;
+        else
+          newNumber =0
         order.number = newNumber;
         customerSchema.forEach((property) => {
           customer[property["prop"]] = req.body[property["prop"]];
