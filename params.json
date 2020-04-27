@@ -1,36 +1,169 @@
 {
   "orderSchema": [
-    { "prop": "customer", "type": "String", "required": true },
-    { "prop": "productSet", "type": "Array", "required": true },
-    { "prop": "number", "type": "Number", "required": true },
-    { "prop": "date", "type": "String", "required": true },
-    { "prop": "status", "type": "Number", "required": false },
-    { "prop": "sum", "type": "Number", "required": true },
-    { "prop": "deliveryMethod", "type": "String", "required": true },
-    { "prop": "payingMethod", "type": "String", "required": true },
-    { "prop": "track", "type": "String", "required": false },
-    { "prop": "remark", "type": "String", "required": false },
-    { "prop": "site", "type": "String", "required": false },
-    { "prop": "message", "type": "String", "required": false },
-    { "prop": "realSum", "type": "String", "required": false }
+    {
+      "prop": "customer",
+      "type": "String",
+      "required": true
+    },
+    {
+      "prop": "productSet",
+      "type": "Array",
+      "required": true
+    },
+    {
+      "prop": "number",
+      "type": "Number",
+      "required": true
+    },
+    {
+      "prop": "date",
+      "type": "String",
+      "required": true
+    },
+    {
+      "prop": "status",
+      "type": "Number",
+      "required": false
+    },
+    {
+      "prop": "sum",
+      "type": "Number",
+      "required": true
+    },
+    {
+      "prop": "deliveryMethod",
+      "type": "String",
+      "required": true
+    },
+    {
+      "prop": "payingMethod",
+      "type": "String",
+      "required": true
+    },
+    {
+      "prop": "track",
+      "type": "String",
+      "required": false
+    },
+    {
+      "prop": "remark",
+      "type": "String",
+      "required": false
+    },
+    {
+      "prop": "site",
+      "type": "String",
+      "required": false
+    },
+    {
+      "prop": "message",
+      "type": "String",
+      "required": false
+    },
+    {
+      "prop": "realSum",
+      "type": "String",
+      "required": false
+    }
   ],
   "customerSchema": [
-    { "prop": "account","type":"String", "required":true   },
-    { "prop": "name","type":"String", "required":false   },
-    { "prop": "phone","type":"String", "required":true   },
-    { "prop": "region","type":"String", "required":true   },
-    { "prop": "city","type":"String", "required":false   },
-    { "prop": "postCode","type":"String", "required":false   },
-    { "prop": "adress","type":"String", "required":false   },
-    { "prop": "date","type":"String", "required":true   },
-    { "prop": "id","type":"Number", "required":false   },
-    { "prop": "orders","type":"Array", "required":false   },
-    { "prop": "ltv","type":"Number", "required":false   }
+    {
+      "prop": "account",
+      "type": "String",
+      "required": true
+    },
+    {
+      "prop": "name",
+      "type": "String",
+      "required": false
+    },
+    {
+      "prop": "phone",
+      "type": "String",
+      "required": true
+    },
+    {
+      "prop": "region",
+      "type": "String",
+      "required": true
+    },
+    {
+      "prop": "city",
+      "type": "String",
+      "required": false
+    },
+    {
+      "prop": "postCode",
+      "type": "String",
+      "required": false
+    },
+    {
+      "prop": "adress",
+      "type": "String",
+      "required": false
+    },
+    {
+      "prop": "date",
+      "type": "String",
+      "required": true
+    },
+    {
+      "prop": "id",
+      "type": "Number",
+      "required": false
+    },
+    {
+      "prop": "orders",
+      "type": "Array",
+      "required": false
+    },
+    {
+      "prop": "ltv",
+      "type": "Number",
+      "required": false
+    }
   ],
   "productSchema": [
-    { "prop": "number", "type":"Number","required":false },
-    { "prop": "color", "type":"String","required":true },
-    { "prop": "engraving", "type":"String","required":false }
+    {
+      "prop": "name",
+      "type": "String",
+      "required": false
+    },
+    {
+      "prop": "heroImage",
+      "type": "String",
+      "required": false
+    },
+    {
+      "prop": "images",
+      "type": "Array",
+      "required": false
+    },
+    {
+      "prop": "description",
+      "type": "String",
+      "required": false
+    },
+    {
+      "prop": "models",
+      "type": "Array",
+      "required": false
+    },
+    {
+      "prop": "discount",
+      "type": "Number",
+      "required": false
+    },
+    {
+      "prop": "price",
+      "type": "Number",
+      "required": false
+    },
+    {
+      "prop": "engraving",
+      "type": "Boolean",
+      "required": false
+    }
   ],
   "products": [
     {

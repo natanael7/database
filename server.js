@@ -7,6 +7,7 @@ let db = require("./config/database");
 
 let ordersRoutes = require("./api/orders/orders.routes");
 let customersRoutes = require("./api/customers/customers.routes");
+let productsRoutes = require("./api/products/products.routes");
 let app = express();
 
 //configure bodyparser
@@ -41,6 +42,7 @@ app.use("/api", router);
 
 ordersRoutes(router);
 customersRoutes(router);
+productsRoutes(router);
 
 // intialise server
 app.listen(properties.PORT, (req, res) => {
