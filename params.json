@@ -172,23 +172,8 @@
       "required": false
     },
     {
-      "prop": "heroImage",
+      "prop": "dueDate",
       "type": "String",
-      "required": false
-    },
-    {
-      "prop": "images",
-      "type": "Array",
-      "required": false
-    },
-    {
-      "prop": "description",
-      "type": "String",
-      "required": false
-    },
-    {
-      "prop": "models",
-      "type": "Array",
       "required": false
     },
     {
@@ -197,55 +182,45 @@
       "required": false
     },
     {
-      "prop": "price",
-      "type": "Number",
+      "prop": "percents",
+      "type": "Boolean",
       "required": false
     },
     {
-      "prop": "engraving",
+      "prop": "valid",
       "type": "Boolean",
       "required": false
     }
   ],
   "subscriptionSchema": [
     {
-      "prop": "name",
+      "prop": "customer",
       "type": "String",
       "required": false
     },
     {
-      "prop": "heroImage",
-      "type": "String",
-      "required": false
-    },
-    {
-      "prop": "images",
+      "prop": "productSet",
       "type": "Array",
       "required": false
     },
     {
-      "prop": "description",
-      "type": "String",
-      "required": false
-    },
-    {
-      "prop": "models",
-      "type": "Array",
-      "required": false
-    },
-    {
-      "prop": "discount",
+      "prop": "frequency",
       "type": "Number",
       "required": false
     },
     {
-      "prop": "price",
+      "prop": "sum",
       "type": "Number",
       "required": false
     },
     {
-      "prop": "engraving",
+      "prop": "status",
       "type": "Boolean",
+      "required": false
+    },
+    {
+      "prop": "date",
+      "type": "String",
       "required": false
     }
   ],
