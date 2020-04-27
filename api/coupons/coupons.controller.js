@@ -1,18 +1,18 @@
-const Product = require("./products.dao");
+const Coupon = require("./coupons.dao");
 const json = require('../../params.json')
 exports.create = function (req, res, next) {
-  let product = {},
-    productSchema = json.productSchema;
+  let coupon = {},
+    couponSchema = json.couponSchema;
   try {
-    productSchema.forEach((property) => {
-      product[property["prop"]] = req.body[property["prop"]];
+    couponSchema.forEach((property) => {
+      coupon[property["prop"]] = req.body[property["prop"]];
     });
-    Product.create(product, function (err, product) {
+    Coupon.create(coupon, function (err, coupon) {
       if (err) {
         res.json(`Error: ${err}`);
       }
       res.json({
-        message: `Product created successfully with id: ${product._id}`,
+        message: `Coupon created successfully with id: ${coupon._id}`,
       });
     });
   } catch (err) {
@@ -21,12 +21,12 @@ exports.create = function (req, res, next) {
 };
 exports.getAll = function (req, res, next) {
   try {
-    Product.get({}, function (err, products) {
+    Coupon.get({}, function (err, coupons) {
       if (err) {
         res.json(err);
       }
       res.json({
-        products: products,
+        coupons: coupons,
       });
     });
   } catch (err) {
@@ -34,20 +34,20 @@ exports.getAll = function (req, res, next) {
   }
 };
 exports.update = function (req, res, next) {
-  let product = {};
+  let coupon = {};
   let json = require("../../params.json");
-  let productSchema = json.productSchema;
-  productSchema.forEach((property) => {
+  let couponSchema = json.couponSchema;
+  couponSchema.forEach((property) => {
     if (req.body[property["prop"]] != undefined)
-      product[property["prop"]] = req.body[property["prop"]];
+      coupon[property["prop"]] = req.body[property["prop"]];
   });
   try {
-    Product.update({ _id: req.params.id }, product, function (err, product) {
+    Coupon.update({ _id: req.params.id }, coupon, function (err, coupon) {
       if (err) {
         res.json(`Error: ${err}`);
       }
       res.json({
-        message: "Product updated successfully",
+        message: "Coupon updated successfully",
       });
     });
   } catch (err) {
@@ -55,14 +55,14 @@ exports.update = function (req, res, next) {
   }
 };
 exports.delete = function (req, res, next) {
-  Product.delete({ _id: req.params.id }, function (err, product) {
+  Coupon.delete({ _id: req.params.id }, function (err, coupon) {
     try {
       if (err) {
         res.json(`Error: ${err}`);
       }
 
       res.json({
-        message: "Product deleted successfully",
+        message: "Coupon deleted successfully",
       });
     } catch (err) {
       res.json(err);
@@ -71,12 +71,12 @@ exports.delete = function (req, res, next) {
 };
 exports.get = function (req, res, next) {
   try {
-    Product.get({ _id: req.params.id }, function (err, products) {
+    Coupon.get({ _id: req.params.id }, function (err, coupons) {
       if (err) {
         res.json(`Error: ${err}`);
       }
       res.json({
-        products: products,
+        coupons: coupons,
       });
     });
   } catch (err) {
@@ -85,7 +85,7 @@ exports.get = function (req, res, next) {
 };
 exports.debugDelete = function (req, res, next) {
   try {
-    Product.deleteMany({}, function (err, result) {
+    Coupon.deleteMany({}, function (err, result) {
       if (err) {
         res.json(`Error: ${err}`);
       }

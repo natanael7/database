@@ -1,18 +1,18 @@
-const Product = require("./products.dao");
+const Subscription = require("./subscriptions.dao");
 const json = require('../../params.json')
 exports.create = function (req, res, next) {
-  let product = {},
-    productSchema = json.productSchema;
+  let subscription = {},
+    subscriptionSchema = json.subscriptionSchema;
   try {
-    productSchema.forEach((property) => {
-      product[property["prop"]] = req.body[property["prop"]];
+    subscriptionSchema.forEach((property) => {
+      subscription[property["prop"]] = req.body[property["prop"]];
     });
-    Product.create(product, function (err, product) {
+    Subscription.create(subscription, function (err, subscription) {
       if (err) {
         res.json(`Error: ${err}`);
       }
       res.json({
-        message: `Product created successfully with id: ${product._id}`,
+        message: `Subscription created successfully with id: ${subscription._id}`,
       });
     });
   } catch (err) {
@@ -21,12 +21,12 @@ exports.create = function (req, res, next) {
 };
 exports.getAll = function (req, res, next) {
   try {
-    Product.get({}, function (err, products) {
+    Subscription.get({}, function (err, subscriptions) {
       if (err) {
         res.json(err);
       }
       res.json({
-        products: products,
+        subscriptions: subscriptions,
       });
     });
   } catch (err) {
@@ -34,20 +34,20 @@ exports.getAll = function (req, res, next) {
   }
 };
 exports.update = function (req, res, next) {
-  let product = {};
+  let subscription = {};
   let json = require("../../params.json");
-  let productSchema = json.productSchema;
-  productSchema.forEach((property) => {
+  let subscriptionSchema = json.subscriptionSchema;
+  subscriptionSchema.forEach((property) => {
     if (req.body[property["prop"]] != undefined)
-      product[property["prop"]] = req.body[property["prop"]];
+      subscription[property["prop"]] = req.body[property["prop"]];
   });
   try {
-    Product.update({ _id: req.params.id }, product, function (err, product) {
+    Subscription.update({ _id: req.params.id }, subscription, function (err, subscription) {
       if (err) {
         res.json(`Error: ${err}`);
       }
       res.json({
-        message: "Product updated successfully",
+        message: "Subscription updated successfully",
       });
     });
   } catch (err) {
@@ -55,14 +55,14 @@ exports.update = function (req, res, next) {
   }
 };
 exports.delete = function (req, res, next) {
-  Product.delete({ _id: req.params.id }, function (err, product) {
+  Subscription.delete({ _id: req.params.id }, function (err, subscription) {
     try {
       if (err) {
         res.json(`Error: ${err}`);
       }
 
       res.json({
-        message: "Product deleted successfully",
+        message: "Subscription deleted successfully",
       });
     } catch (err) {
       res.json(err);
@@ -71,12 +71,12 @@ exports.delete = function (req, res, next) {
 };
 exports.get = function (req, res, next) {
   try {
-    Product.get({ _id: req.params.id }, function (err, products) {
+    Subscription.get({ _id: req.params.id }, function (err, subscriptions) {
       if (err) {
         res.json(`Error: ${err}`);
       }
       res.json({
-        products: products,
+        subscriptions: subscriptions,
       });
     });
   } catch (err) {
@@ -85,7 +85,7 @@ exports.get = function (req, res, next) {
 };
 exports.debugDelete = function (req, res, next) {
   try {
-    Product.deleteMany({}, function (err, result) {
+    Subscription.deleteMany({}, function (err, result) {
       if (err) {
         res.json(`Error: ${err}`);
       }

@@ -3,16 +3,16 @@ let Schema = mongoose.Schema;
 let tempObj = {};
 
 const json = require("../../params.json");
-const prodSchema = json.productSchema;
-prodSchema.forEach((property) => {
+const subSchema = json.subscriptionSchema;
+subSchema.forEach((property) => {
   tempObj[property["prop"]] = {
     type: property["type"],
     required: property["required"],
     unique: false,
   };
 });
-let productSchema = new Schema(tempObj, {
+let subscriptionSchema = new Schema(tempObj, {
   timestamps: false,
 });
 
-module.exports = productSchema;
+module.exports = subscriptionSchema;

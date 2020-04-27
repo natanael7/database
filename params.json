@@ -165,6 +165,90 @@
       "required": false
     }
   ],
+  "couponSchema": [
+    {
+      "prop": "name",
+      "type": "String",
+      "required": false
+    },
+    {
+      "prop": "heroImage",
+      "type": "String",
+      "required": false
+    },
+    {
+      "prop": "images",
+      "type": "Array",
+      "required": false
+    },
+    {
+      "prop": "description",
+      "type": "String",
+      "required": false
+    },
+    {
+      "prop": "models",
+      "type": "Array",
+      "required": false
+    },
+    {
+      "prop": "discount",
+      "type": "Number",
+      "required": false
+    },
+    {
+      "prop": "price",
+      "type": "Number",
+      "required": false
+    },
+    {
+      "prop": "engraving",
+      "type": "Boolean",
+      "required": false
+    }
+  ],
+  "subscriptionSchema": [
+    {
+      "prop": "name",
+      "type": "String",
+      "required": false
+    },
+    {
+      "prop": "heroImage",
+      "type": "String",
+      "required": false
+    },
+    {
+      "prop": "images",
+      "type": "Array",
+      "required": false
+    },
+    {
+      "prop": "description",
+      "type": "String",
+      "required": false
+    },
+    {
+      "prop": "models",
+      "type": "Array",
+      "required": false
+    },
+    {
+      "prop": "discount",
+      "type": "Number",
+      "required": false
+    },
+    {
+      "prop": "price",
+      "type": "Number",
+      "required": false
+    },
+    {
+      "prop": "engraving",
+      "type": "Boolean",
+      "required": false
+    }
+  ],
   "products": [
     {
       "macro": "Periute",

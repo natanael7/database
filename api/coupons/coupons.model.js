@@ -3,7 +3,7 @@ let Schema = mongoose.Schema;
 let tempObj = {};
 
 const json = require("../../params.json");
-const prodSchema = json.productSchema;
+const prodSchema = json.couponSchema;
 prodSchema.forEach((property) => {
   tempObj[property["prop"]] = {
     type: property["type"],
@@ -11,8 +11,8 @@ prodSchema.forEach((property) => {
     unique: false,
   };
 });
-let productSchema = new Schema(tempObj, {
+let couponSchema = new Schema(tempObj, {
   timestamps: false,
 });
 
-module.exports = productSchema;
+module.exports = couponSchema;

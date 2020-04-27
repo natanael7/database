@@ -1,7 +1,7 @@
 let mongoose = require("mongoose");
-let productSchema = require("./products.model");
+let subscriptionSchema = require("./subscriptions.model");
 
-productSchema.statics = {
+subscriptionSchema.statics = {
   create: function (data, cb) {
     let hero = new this(data);
     hero.save(cb);
@@ -20,5 +20,5 @@ productSchema.statics = {
   },
 };
 
-let productModel = mongoose.model("Product", productSchema);
-module.exports = productModel;
+let subscriptionModel = mongoose.model("Subscription", subscriptionSchema);
+module.exports = subscriptionModel;
