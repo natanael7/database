@@ -50,60 +50,66 @@ exports.create = function (req, res, next) {
     orderSchema.forEach((property) => {
       order[property["prop"]] = req.body[property["prop"]];
     });
-    customerSchema.forEach((property) => {
-      customer[property["prop"]] = req.body[property["prop"]];
-    });
-    if (req.body.customer == undefined) {
-      Customer.get({ account: customer.account }, function (err, existent) {
-        if (err) {
-          res.json(`Error: ${err}`);
-        }
-        if (existent.length > 0) {
-          order.customer = existent[0]._id;
+    Order.findOne()
+      .sort("-number")
+      .exec(function (err, post) {
+        let newNumber = post.number + 1;
+        order.number = newNumber;
+        customerSchema.forEach((property) => {
+          customer[property["prop"]] = req.body[property["prop"]];
+        });
+        if (req.body.customer == undefined) {
+          Customer.get({ account: customer.account }, function (err, existent) {
+            if (err) {
+              res.json(`Error: ${err}`);
+            }
+            if (existent.length > 0) {
+              order.customer = existent[0]._id;
+              Order.create(order, function (err, order) {
+                if (err) {
+                  res.json(`Error: ${err}`);
+                }
+                existent[0].orders.push(order.id);
+                existent[0].ltv += order.sum;
+                existent[0].save();
+                res.json({
+                  messageOrder: `Order created successfully with id: ${order._id}`,
+                  messageCustomer: `Added to customer with id: ${order.customer}`,
+                });
+              });
+            } else {
+              Customer.create(customer, function (err, customer) {
+                if (err) {
+                  res.json(`Error: ${err}`);
+                }
+                order.customer = customer._id;
+                Order.create(order, function (err, order) {
+                  if (err) {
+                    res.json(`Error: ${err}`);
+                  }
+                  customer.orders.push(order._id);
+                  customer.save();
+                  res.json({
+                    messageOrder: `Order created successfully with id: ${order._id}`,
+                    messageCustomer: `Customer created successfully with id: ${order.customer}`,
+                  });
+                });
+              });
+            }
+          });
+        } else {
+          order.customer = req.body.customer;
           Order.create(order, function (err, order) {
             if (err) {
               res.json(`Error: ${err}`);
             }
-            existent[0].orders.push(order.id);
-            existent[0].ltv += order.sum;
-            existent[0].save();
             res.json({
               messageOrder: `Order created successfully with id: ${order._id}`,
               messageCustomer: `Added to customer with id: ${order.customer}`,
             });
           });
-        } else {
-          Customer.create(customer, function (err, customer) {
-            if (err) {
-              res.json(`Error: ${err}`);
-            }
-            order.customer = customer._id;
-            Order.create(order, function (err, order) {
-              if (err) {
-                res.json(`Error: ${err}`);
-              }
-              customer.orders.push(order.id);
-              customer.save();
-              res.json({
-                messageOrder: `Order created successfully with id: ${order._id}`,
-                messageCustomer: `Customer created successfully with id: ${order.customer}`,
-              });
-            });
-          });
         }
       });
-    } else {
-      order.customer = req.body.customer;
-      Order.create(order, function (err, order) {
-        if (err) {
-          res.json(`Error: ${err}`);
-        }
-        res.json({
-          messageOrder: `Order created successfully with id: ${order._id}`,
-          messageCustomer: `Added to customer with id: ${order.customer}`,
-        });
-      });
-    }
   } catch (err) {
     res.json(`Error: ${err}`);
   }
