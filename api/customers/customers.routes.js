@@ -1,16 +1,42 @@
 const Customer = require("./customers.controller.js");
+const express = require("express");
+const router = express.Router();
+const passport = require("passport");
 
-module.exports = function (router) {
-  router.post("/customer/create", Customer.create);
-  router.get("/customer/getAll", Customer.getAll);
-  router.put("/customer/update/:id", Customer.update);
-  router.delete("/customer/delete/:id", Customer.delete);
-  router.get("/customer/summaryAll", Customer.summaryAll);
-  router.post("/customer/filter", Customer.filter);
-  router.post("/customer/summaryFilter", Customer.summaryFilter);
-  
-  // BETA
+router.get(
+  "/getAll",
+  passport.authenticate(["jwt"], { session: false }),
+  Customer.getAll
+);
+router.get(
+  "/get/:id",
+  passport.authenticate(["jwt"], { session: false }),
+  Customer.get
+);
+router.post(
+  "/create",
+  passport.authenticate(["jwt"], { session: false }),
+  Customer.create
+);
+router.post(
+  "/filter",
+  passport.authenticate(["jwt"], { session: false }),
+  Customer.filter
+);
+router.put(
+  "/update/:id",
+  passport.authenticate(["jwt"], { session: false }),
+  Customer.update
+);
+router.delete(
+  "/delete/:id",
+  passport.authenticate(["jwt"], { session: false }),
+  Customer.delete
+);
+router.delete(
+  "/deleteAll",
+  passport.authenticate(["jwt"], { session: false }),
+  Customer.debugDelete
+);
 
-  router.get("/customer/get/:id", Customer.get);
-  router.delete("/customer/deleteAll", Customer.debugDelete);
-};
+module.exports = router;

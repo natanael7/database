@@ -1,4 +1,5 @@
-const json = require('../../params.json')
+const json = require("../../params.json");
+const Customer = require("../customers/customers.dao.js");
 class Summary {
   constructor(orders) {
     this.orderCount = orders.length;
@@ -71,13 +72,13 @@ class Summary {
   countMicroProducts(arr) {
     let obj = {};
     arr.forEach((order) => {
-      if(order.productSet.length)
-      order.productSet[0].forEach((product) => {
-        if (Number.isInteger(parseInt(product.color)))
-          product.color = "refurbished";
-        if (obj[product.color] == undefined) obj[product.color] = 1;
-        else obj[product.color]++;
-      });
+      if (order.productSet.length)
+        order.productSet[0].forEach((product) => {
+          if (Number.isInteger(parseInt(product.color)))
+            product.color = "refurbished";
+          if (obj[product.color] == undefined) obj[product.color] = 1;
+          else obj[product.color]++;
+        });
       else
         order.productSet.forEach((product) => {
           if (Number.isInteger(parseInt(product.color)))
@@ -92,9 +93,21 @@ class Summary {
   countRegion(arr) {
     let obj = {};
     arr.forEach((el) => {
-      if (obj[el["customer"]["region"]] == undefined)
-        obj[el["customer"]["region"]] = 1;
-      else obj[el["customer"]["region"]]++;
+      Customer.get({ _id: el["customer"] }, function (err, customers) {
+        if (err) {
+          res.json(`Error: ${err}`);
+        }
+        let k=0
+        if (customers[0] == undefined) {
+         
+          if (customers["region"] == undefined) customers["region"] = 1;
+          else customers["region"]++;
+        }
+        else { 
+          if (customers[0]["region"] == undefined) customers[0]["region"] = 1;
+          else customers[0]["region"]++;
+        }
+      });
     });
     return obj;
   }

@@ -1,10 +1,36 @@
 const Coupon = require("./coupons.controller.js");
+const express = require("express");
+const router = express.Router();
+const passport = require("passport");
+router.get(
+  "/getAll",
+  passport.authenticate(["jwt"], { session: false }),
+  Coupon.getAll
+);
+router.get(
+  "/get/:id",
+  passport.authenticate(["jwt"], { session: false }),
+  Coupon.get
+);
+router.get(
+  "/get/name/:name",
+  passport.authenticate(["jwt"], { session: false }),
+  Coupon.getByName
+);
+router.post(
+  "/create",
+  passport.authenticate(["jwt"], { session: false }),
+  Coupon.create
+);
+router.put(
+  "/update/:id",
+  passport.authenticate(["jwt"], { session: false }),
+  Coupon.update
+);
+router.delete(
+  "/delete/:id",
+  passport.authenticate(["jwt"], { session: false }),
+  Coupon.delete
+);
 
-module.exports = function (router) {
-  router.post("/coupon/create", Coupon.create);
-  router.get("/coupon/getAll", Coupon.getAll);
-  router.get("/coupon/get/:id", Coupon.get);
-  router.get("/coupon/get/name/:name", Coupon.getByName);
-  router.put("/coupon/update/:id", Coupon.update);
-  router.delete("/coupon/delete/:id", Coupon.delete);
-};
+module.exports = router;

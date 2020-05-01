@@ -34,21 +34,6 @@ exports.getAll = function (req, res, next) {
     res.json(err);
   }
 };
-exports.summaryAll = function (req, res, next) {
-  try {
-    Customer.get({}, function (err, customers) {
-      if (err) {
-        res.json(`Error: ${err}`);
-      }
-      let summ = new Summary(customers);
-      res.json({
-        summary: summ,
-      });
-    });
-  } catch (err) {
-    res.json(err);
-  }
-};
 exports.update = function (req, res, next) {
   let customer = {};
   let json = require("../../params.json");
@@ -171,86 +156,6 @@ exports.filter = function (req, res, next) {
       }
       res.json({
         customers: filtredData(customers),
-      });
-    });
-  } catch (err) {
-    res.json(err);
-  }
-};
-exports.summaryFilter = function (req, res, next) {
-  function switched(criteria, customers) {
-    let result;
-    switch (criteria.type) {
-      case "is":
-        if (criteria.value == undefined) res = [];
-        result = customers.filter((customer) => {
-          return customer[criteria.parameter] == criteria.value;
-        });
-        res = result;
-        break;
-      case "isNot":
-        if (criteria.value == undefined) res = [];
-        result = customers.filter((customer) => {
-          return customer[criteria.parameter] != criteria.value;
-        });
-        res = result;
-        break;
-      case "isBetween":
-        if (criteria.smallest == undefined || criteria.biggest == undefined)
-          res = [];
-        result = customers.filter((customer) => {
-          return (
-            customer[criteria.parameter] >= parseInt(criteria.smallest) &&
-            customer[criteria.parameter] <= parseInt(criteria.biggest)
-          );
-        });
-        res = result;
-        break;
-      case "isNotBetween":
-        if (criteria.smallest == undefined || criteria.biggest == undefined)
-          res = [];
-        result = customers.filter((customer) => {
-          return (
-            customer[criteria.parameter] <= parseInt(criteria.smallest) ||
-            customer[criteria.parameter] >= parseInt(criteria.biggest)
-          );
-        });
-        res = result;
-        break;
-      case "isIn":
-        if (criteria.array == undefined) res = [];
-        result = customers.filter((customer) => {
-          return criteria.array.indexOf(customer[criteria.parameter]) != -1;
-        });
-        res = result;
-        break;
-      case "isNotIn":
-        if (criteria.array == undefined) res = [];
-        result = customers.filter((customer) => {
-          return criteria.array.indexOf(customer[criteria.parameter]) == -1;
-        });
-        res = result;
-        break;
-      default:
-        res = [];
-        break;
-    }
-    return res;
-  }
-  function summFiltredData(customers) {
-    let results = customers;
-    let crit = req.body.criterias;
-    for (let i = 0; i < crit.length; i++) results = switched(crit[i], results);
-    let summ = new Summary(results);
-    return summ;
-  }
-  try {
-    Customer.get({}, function (err, customers) {
-      if (err) {
-        res.json(`Error: ${err}`);
-      }
-      res.json({
-        summary: summFiltredData(customers),
       });
     });
   } catch (err) {

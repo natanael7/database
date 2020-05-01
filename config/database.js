@@ -5,7 +5,7 @@ let mongoose = require("mongoose");
 let chalk = require("chalk");
 
 //require database URL from properties file
-let dbURL = require("./properties").DB;
+let dbURL = require("./config").DB;
 
 let connected = chalk.bold.cyan;
 let error = chalk.bold.yellow;
@@ -14,7 +14,11 @@ let termination = chalk.bold.magenta;
 
 //export this function and imported by server.js
 module.exports = function () {
-  mongoose.connect(dbURL);
+  mongoose.connect(dbURL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+  });
 
   mongoose.connection.on("connected", function () {
     console.log(connected("Mongoose default connection is open to ", dbURL));
