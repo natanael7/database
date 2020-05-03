@@ -21,13 +21,11 @@ app.use(function (req, res, next) {
 });
 
 
-const apiRouter = require("./api/router");
+const apiRouter = require("./routes/router");
 app.use("/api", apiRouter);
 
 const passport = require("passport");
-const authRouter = require("./routes/auth_route");
 app.use(passport.initialize());
-app.use("/api/authentication", authRouter);
 app.get("/", (req, res) => {
   res.json({ root: "running" });
 });
