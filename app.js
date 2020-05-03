@@ -20,8 +20,7 @@ app.use(function (req, res, next) {
   next();
 });
 
-
-const apiRouter = require("./routes/router");
+const apiRouter = require("./api/router");
 app.use("/api", apiRouter);
 
 const passport = require("passport");
