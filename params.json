@@ -165,6 +165,65 @@
       "required": false
     }
   ],
+  "couponSchema": [
+    {
+      "prop": "name",
+      "type": "String",
+      "required": false
+    },
+    {
+      "prop": "dueDate",
+      "type": "String",
+      "required": false
+    },
+    {
+      "prop": "discount",
+      "type": "Number",
+      "required": false
+    },
+    {
+      "prop": "percents",
+      "type": "Boolean",
+      "required": false
+    },
+    {
+      "prop": "valid",
+      "type": "Boolean",
+      "required": false
+    }
+  ],
+  "subscriptionSchema": [
+    {
+      "prop": "customer",
+      "type": "String",
+      "required": false
+    },
+    {
+      "prop": "productSet",
+      "type": "Array",
+      "required": false
+    },
+    {
+      "prop": "frequency",
+      "type": "Number",
+      "required": false
+    },
+    {
+      "prop": "sum",
+      "type": "Number",
+      "required": false
+    },
+    {
+      "prop": "status",
+      "type": "Boolean",
+      "required": false
+    },
+    {
+      "prop": "date",
+      "type": "String",
+      "required": false
+    }
+  ],
   "products": [
     {
       "macro": "Periute",

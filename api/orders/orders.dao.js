@@ -2,13 +2,13 @@ let mongoose = require("mongoose");
 let orderSchema = require("./orders.model");
 
 orderSchema.statics = {
-  create: function (data, cb) {
+  create: async function (data, cb) {
     let hero = new this(data);
-    hero.save(cb);
+    return hero.save(cb);
   },
 
   get: function (query, cb) {
-    this.find(query, cb);
+     this.find(query, cb);
   },
 };
 

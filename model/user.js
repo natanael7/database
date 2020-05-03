@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const _ = require("lodash");
-var Schema = mongoose.Schema;
-var passportLocalMongoose = require("passport-local-mongoose");
+const Schema = mongoose.Schema;
+const passportLocalMongoose = require("passport-local-mongoose");
 
 const UserSchema = new Schema({
   provider: String,

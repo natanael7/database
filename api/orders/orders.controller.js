@@ -1,131 +1,77 @@
 const Order = require("./orders.dao");
 const Customer = require("../customers/customers.dao.js");
-function parseDate(date) {
-  let arr = date.split(".");
-  let res = parseInt(arr[0]);
-  let years = 0;
-  for (let i = 0; i < parseInt(arr[2]); i++)
-    if (i % 4 == 0) years += 366;
-    else res += 365;
 
-  let months = parseInt(arr[1]);
-  if (months <= 7)
-    for (let i = 0; i < months; i++)
-      if (i == 2)
-        if (parseInt(arr[2]) % 4 != 0) res += 28;
-        else res += 29;
-      else if (i % 2 == 0) {
-        res += 31;
-      } else {
-        res += 30;
-      }
-  else {
-    for (let i = 0; i < months; i++)
-      if (i % 2 != 0) {
-        res += 31;
-      } else {
-        res += 30;
-      }
-  }
-  return res;
-}
-exports.create = function (req, res, next) {
-  function find(customer) {
-    let aux;
-    Customer.get({ account: customer.account }, function (err, result) {
-      if (err) {
-        res.json(`Error: ${err}`);
-      }
-      aux = result;
-    });
-    return aux;
-  }
+exports.create = async (req, res, next) => {
+  console.log(req["body"]);
+
   let order = {},
-    customer = {},
-    json = require("../../params.json"),
-    orderSchema = json.orderSchema,
-    customerSchema = json.customerSchema;
+    customer = {};
   try {
-    orderSchema.forEach((property) => {
-      order[property["prop"]] = req.body[property["prop"]];
-    });
-    Order.findOne()
-      .sort("-number")
-      .exec(function (err, post) {
-        let newNumber = 0
-        if(post != null)
-          newNumber = post.number + 1;
-        order.number = newNumber;
-        customerSchema.forEach((property) => {
-          customer[property["prop"]] = req.body[property["prop"]];
+    order.customer = req.body.customer;
+    order.productSet = req.body.productSet;
+    order.sum = req.body.sum;
+    order.deliveryMethod = req.body.deliveryMethod;
+    order.payingMethod = req.body.payingMethod;
+    customer.account = req.body.account;
+    customer.name = req.body.name;
+    customer.phone = req.body.phone;
+    customer.region = req.body.region;
+    customer.city = req.body.city;
+    customer.postCode = req.body.postCode;
+    customer.adress = req.body.adress;
+    customer.id = req.body.id;
+    
+    const post = await Order.findOne().sort("-number").exec();
+
+    let newNumber = 0;
+    if (post != null) newNumber = post.number + 1;
+    order.number = newNumber;
+
+    if (req.body.customer == undefined) {
+      const existent = await Customer.find({ account: customer.account });
+      if (existent.length > 0) {
+        order.customer = existent[0]._id;
+        const newOrder = await Order.create(order);
+        existent[0].orders.push(newOrder.id);
+        existent[0].ltv += newOrder.sum;
+        existent[0].save();
+        res.json({
+          messageOrder: `Order created successfully with id: ${newOrder._id}`,
+          messageCustomer: `Added to customer with id: ${newOrder.customer}`,
         });
-        if (req.body.customer == undefined) {
-          Customer.get({ account: customer.account }, function (err, existent) {
-            if (err) {
-              res.json(`Error: ${err}`);
-            }
-            if (existent.length > 0) {
-              order.customer = existent[0]._id;
-              Order.create(order, function (err, order) {
-                if (err) {
-                  res.json(`Error: ${err}`);
-                }
-                existent[0].orders.push(order.id);
-                existent[0].ltv += order.sum;
-                existent[0].save();
-                res.json({
-                  messageOrder: `Order created successfully with id: ${order._id}`,
-                  messageCustomer: `Added to customer with id: ${order.customer}`,
-                });
-              });
-            } else {
-              Customer.create(customer, function (err, customer) {
-                if (err) {
-                  res.json(`Error: ${err}`);
-                }
-                order.customer = customer._id;
-                Order.create(order, function (err, order) {
-                  if (err) {
-                    res.json(`Error: ${err}`);
-                  }
-                  customer.orders.push(order._id);
-                  customer.save();
-                  res.json({
-                    messageOrder: `Order created successfully with id: ${order._id}`,
-                    messageCustomer: `Customer created successfully with id: ${order.customer}`,
-                  });
-                });
-              });
-            }
-          });
-        } else {
-          order.customer = req.body.customer;
-          Order.create(order, function (err, order) {
-            if (err) {
-              res.json(`Error: ${err}`);
-            }
-            res.json({
-              messageOrder: `Order created successfully with id: ${order._id}`,
-              messageCustomer: `Added to customer with id: ${order.customer}`,
-            });
-          });
-        }
+      } else {
+        const newCustomer = await Customer.create(customer);
+        order.customer = newCustomer._id;
+        const newOrder = await Order.create(order);
+        newCustomer.orders.push(newOrder._id);
+        newCustomer.ltv += newOrder.sum;
+        newCustomer.save();
+        res.json({
+          messageOrder: `Order created successfully with id: ${newOrder._id}`,
+          messageCustomer: `Customer created successfully with id: ${newOrder.customer}`,
+        });
+      }
+    } else {
+      order.customer = req.body.customer;
+      const newOrder = await Order.create(order);
+      res.json({
+        messageOrder: `Order created successfully with id: ${newOrder._id}`,
+        messageCustomer: `Added to customer with id: ${newOrder.customer}`,
       });
+    }
+    console.log(order.number);
   } catch (err) {
     res.json(`Error: ${err}`);
   }
 };
-exports.get = function (req, res, next) {
+exports.get = async (req, res, next) => {
   try {
-    Order.get({ _id: req.params.id }, function (err, orders) {
-      if (err) {
-        res.json(`Error: ${err}`);
-      }
-      res.json({
-        orders: orders,
-      });
+    const orders = await Order.findById(req.params.id );
+    console.log(orders)
+    res.json({
+      orders: orders,
     });
   } catch (err) {
-    res.json(err);
+    res.json(`Error: ${err}`);
   }
 };

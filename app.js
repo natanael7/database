@@ -7,6 +7,10 @@ let config = require("./config/config");
 let db = require("./config/database");
 db();
 
+const bodyParser = require("body-parser");
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
 const log = require("morgan")("dev");
 app.use(log);
 app.use(function (req, res, next) {
@@ -26,6 +30,7 @@ app.use("/api", apiRouter);
 const passport = require("passport");
 app.use(passport.initialize());
 app.get("/", (req, res) => {
+  console.log(req.body)
   res.json({ root: "running" });
 });
 
